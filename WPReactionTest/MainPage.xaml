@@ -1,0 +1,107 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="WPReactionTest.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="False" 
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit">
+
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn"/>
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn"/>
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+    
+    <phone:PhoneApplicationPage.Resources>
+        <DataTemplate x:Name="MainMenuTemplate">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,17" Tap="MenuItem_Tap">
+                <Canvas Height="100" Width="100" Margin="12,0,9,0">
+                    <Rectangle Height="100" Width="100" Fill="{StaticResource PhoneAccentBrush}" />
+                    <Image Height="100" Width="100" Source="{Binding ImagePath}" />
+                </Canvas>
+                <StackPanel>
+                    <TextBlock Style="{StaticResource PhoneTextExtraLargeStyle}" Text="{Binding Name}" />
+                    <TextBlock Style="{StaticResource PhoneTextSubtleStyle}" Text="{Binding Description}" TextWrapping="Wrap" Margin="12,-6,12,0" />
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+        
+        <DataTemplate x:Name="HighScoreItemTemplate">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,17">
+                <TextBlock Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding PlayerName}" />
+                <TextBlock Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding Result}" />
+                <TextBlock Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding Misses}" />
+            </StackPanel>
+        </DataTemplate>
+    </phone:PhoneApplicationPage.Resources>
+        
+    <Grid x:Name="LayoutRoot">
+        <controls:Panorama x:Name="MainPagePanorama" Title="{StaticResource ApplicationTitle}" SelectionChanged="MainMenuPanorama_SelectionChanged">
+            <controls:PanoramaItem Tag="menu" Header="Menu" x:Name="MenuPanoramaItem">
+                <ListBox Margin="0,0,-12,0" ItemsSource="{Binding MainMenuItems}" toolkit:TiltEffect.IsTiltEnabled="True" ItemTemplate="{StaticResource MainMenuTemplate}" />
+            </controls:PanoramaItem>
+            <controls:PanoramaItem Tag="highscores" Header="High Scores" x:Name="HighScoresPanoramaItem">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Visibility="Collapsed" x:Name="LoadingGrid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="15" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="1" Text="Loading high Scores..." Width="190" />
+                        <ProgressBar Grid.Row="2" IsIndeterminate="True" />
+                    </Grid>
+                    <Grid Visibility="Visible" x:Name="HighScoresGrid">
+                        <ListBox>
+                            <StackPanel>
+                                <TextBlock Text="Easy" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Center" />
+                                <ListBox Margin="0,0,-12,0" ItemsSource="{Binding EasyHighScores}" toolkit:TiltEffect.IsTiltEnabled="False" ItemTemplate="{StaticResource HighScoreItemTemplate}" />
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock Text="Moderate" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Center" />
+                                <ListBox Margin="0,0,-12,0" ItemsSource="{Binding ModerateHighScores}" toolkit:TiltEffect.IsTiltEnabled="False" ItemTemplate="{StaticResource HighScoreItemTemplate}" />
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock Text="Hard" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Center" />
+                                <ListBox Margin="0,0,-12,0" ItemsSource="{Binding HardHighScores}" toolkit:TiltEffect.IsTiltEnabled="False" ItemTemplate="{StaticResource HighScoreItemTemplate}" />
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock Text="Insane" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Center" />
+                                <ListBox Margin="0,0,-12,0" ItemsSource="{Binding InsaneHighScores}" toolkit:TiltEffect.IsTiltEnabled="False" ItemTemplate="{StaticResource HighScoreItemTemplate}" />
+                            </StackPanel>
+                        </ListBox>
+                    </Grid>
+                </Grid>
+            </controls:PanoramaItem>
+        </controls:Panorama>
+    </Grid>
+</phone:PhoneApplicationPage>

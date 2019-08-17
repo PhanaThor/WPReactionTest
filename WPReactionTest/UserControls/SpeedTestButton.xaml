@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="WPReactionTest.UserControls.SpeedTestButton"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    d:DesignHeight="200" d:DesignWidth="200" Loaded="UserControl_Loaded">
+    
+    <UserControl.Resources>        
+        <ControlTemplate x:Key="SquareButtonTemplate" x:Name="SquareButtonTemplate" TargetType="Button">
+            <Grid Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+                <Rectangle x:Name="Item" Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness.Left}" />
+            </Grid>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="CircleButtonTemplate" x:Name="CircleButtonTemplate" TargetType="Button">
+            <Grid Width="{TemplateBinding Width}"  Height="{TemplateBinding Height}">
+                <Ellipse x:Name="Item" Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness.Left}" />
+            </Grid>
+        </ControlTemplate>
+
+        <Storyboard x:Name="HideButtonStoryBoard">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="BorderGradientLight" Storyboard.TargetProperty="Color" Duration="0:0:0.2">
+                <LinearColorKeyFrame KeyTime="0:0:0.2" Value="Transparent" />
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="BorderGradientDark" Storyboard.TargetProperty="Color" Duration="0:0:0.2">
+                <LinearColorKeyFrame KeyTime="0:0:0.2" Value="Transparent" />
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="FillGradientLight" Storyboard.TargetProperty="Color" Duration="0:0:0.2">
+                <LinearColorKeyFrame KeyTime="0:0:0.2" Value="Transparent" />
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="FillGradientDark" Storyboard.TargetProperty="Color" Duration="0:0:0.2">
+                <LinearColorKeyFrame KeyTime="0:0:0.2" Value="Transparent" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+    </UserControl.Resources>
+    
+    <Grid x:Name="LayoutRoot">
+        <Button x:Name="ItemButton" Content="Press now" MinHeight="150" MinWidth="150" Tap="ItemButton_Tap">
+            <Button.BorderBrush>
+                <LinearGradientBrush x:Name="BorderGradientBrush" StartPoint="0.2,0" EndPoint="0.8,1">
+                    <GradientStop x:Name="BorderGradientLight" Color="{StaticResource PhoneBorderColor}" Offset="0.0" />
+                    <GradientStop x:Name="BorderGradientDark" Color="{StaticResource PhoneDisabledColor}" Offset="1.0" />
+                </LinearGradientBrush>
+            </Button.BorderBrush>
+            <Button.Background>
+                <LinearGradientBrush x:Name="FillGradientBrush" StartPoint="0.3,0" EndPoint="0.7,1">
+                    <GradientStop x:Name="FillGradientLight" Color="LightGreen" Offset="0" />
+                    <GradientStop x:Name="FillGradientDark" Color="DarkGreen" Offset="1" />
+                </LinearGradientBrush>
+            </Button.Background>
+            <Button.BorderThickness>10</Button.BorderThickness>
+            <Button.Triggers>
+                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard x:Name="FadeToRedEffectStoryBoard" Duration="0:0:5.1">
+                            <DoubleAnimation Storyboard.TargetName="BorderGradientBrush" Storyboard.TargetProperty="(Brush.Opacity)" From="0" To="1" BeginTime="0:0:0" Duration="0:0:0.1" />
+                            <DoubleAnimation Storyboard.TargetName="FillGradientBrush" Storyboard.TargetProperty="(Brush.Opacity)" From="0" To="1" BeginTime="0:0:0" Duration="0:0:0.1" />
+                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="FillGradientLight" Storyboard.TargetProperty="Color" BeginTime="0:0:0.1" Duration="0:0:5">
+                                <LinearColorKeyFrame KeyTime="0:0:5" Value="Pink" />
+                            </ColorAnimationUsingKeyFrames>
+                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="FillGradientDark" Storyboard.TargetProperty="Color" BeginTime="0:0:0.1" Duration="0:0:5">
+                                <LinearColorKeyFrame KeyTime="0:0:5" Value="DarkRed" />
+                            </ColorAnimationUsingKeyFrames> 
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Button.Triggers>
+        </Button>
+    </Grid>
+</UserControl>
